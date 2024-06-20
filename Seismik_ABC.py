@@ -16,12 +16,30 @@ TAC_diff_TBC = forward - reverse
 TAB = (data_sefrak['Forward'].max() + data_sefrak['Reverse'].max()) / 2
 
 # Add TAC_diff_TBC and TAB as new columns to the DataFrame
-data_sefrak['TAC_diff_TBC'] = TAC_diff_TBC
-data_sefrak['TAB'] = [TAB] * len(data_sefrak) 
+data_sefrak['TAC-TBC'] = TAC_diff_TBC
+data_sefrak['TAB'] = [TAB] * len(data_sefrak)
+
+#Mencari nilai v1 up
+v1_up = ((data_sefrak['Jarak'].iloc[1] - data_sefrak['Jarak'].iloc[0]) / (data_sefrak['Forward'].iloc[1] - data_sefrak['Forward'].iloc[0])) * 1000
+#Mencari nilai v1 down
+v1_down = ((data_sefrak['Jarak'].iloc[20] - data_sefrak['Jarak'].iloc[19]) / (data_sefrak['Reverse'].iloc[19] - data_sefrak['Reverse'].iloc[20])) * 1000
+#Mencari Nilai V1
+v1 = (v1_up + v1_down)/2
+#Mencari Nilai V2
+v2 = ((data_sefrak['Jarak'].iloc[19] - data_sefrak['Jarak'].iloc[1]) / (data_sefrak['TAC-TBC'].iloc[19] - data_sefrak['TAC-TBC'].iloc[1])) * 1000
+
+theta = np.degrees(np.arcsin(v1 / v2))
+cos_theta = np.cos(np.radians(theta))
+data_sefrak['T_ECF'] = data_sefrak['Forward'] + data_sefrak['Reverse'] - data_sefrak['TAB']
+data_sefrak['V1'] = [v1] * len(data_sefrak)
+data_sefrak['V2'] = [v2] * len(data_sefrak)
+data_sefrak['COS Theta'] = [cos_theta] * len(data_sefrak)
+data_sefrak['hc'] = -(data_sefrak['V1'] * data_sefrak['T_ECF']) * 0.001 / (2 * data_sefrak['COS Theta'])
 
 # Check the data to understand its structure
 print(data_sefrak.head())
 
+##TAHAP PEMPLOTINGAN##
 #Gelombang Langsung
 dir_forward = data_sefrak.loc[:1, ['Jarak', 'Forward']]
 dir_reverse = data_sefrak.loc[19:, ['Jarak', 'Reverse']]
