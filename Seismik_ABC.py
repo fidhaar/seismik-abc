@@ -11,7 +11,13 @@ reverse = data_sefrak['Reverse']
 
 #Mencari Nilai TAC-TBC dengan cara mengurangkan Forward(TAC) dan reverse(TBC)
 TAC_diff_TBC = forward - reverse
-print(TAC_diff_TBC)
+
+#Mencari nilai TAB
+TAB = (data_sefrak['Forward'].max() + data_sefrak['Reverse'].max()) / 2
+
+# Add TAC_diff_TBC and TAB as new columns to the DataFrame
+data_sefrak['TAC_diff_TBC'] = TAC_diff_TBC
+data_sefrak['TAB'] = [TAB] * len(data_sefrak) 
 
 # Check the data to understand its structure
 print(data_sefrak.head())
