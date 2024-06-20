@@ -5,6 +5,14 @@ import matplotlib.pyplot as plt
 # Read the CSV file
 data_sefrak = pd.read_csv("data seismik.csv", sep=';')
 
+#Mendefinisikan nilai forward dan Reverse
+forward = data_sefrak['Forward']
+reverse = data_sefrak['Reverse']
+
+#Mencari Nilai TAC-TBC dengan cara mengurangkan Forward(TAC) dan reverse(TBC)
+TAC_diff_TBC = forward - reverse
+print(TAC_diff_TBC)
+
 # Check the data to understand its structure
 print(data_sefrak.head())
 
@@ -13,7 +21,7 @@ dir_forward = data_sefrak.loc[:1, ['Jarak', 'Forward']]
 dir_reverse = data_sefrak.loc[19:, ['Jarak', 'Reverse']]
 
 #Gelombang Reverse
-ref_forward = data_sefrak.loc[1:20, ['Jarak', 'Forward']]
+ref_forward = data_sefrak.loc[1:, ['Jarak', 'Forward']]
 ref_reverse = data_sefrak.loc[0:19, ['Jarak', 'Reverse']]
 
 # Perform linear regression for Direct Forward
